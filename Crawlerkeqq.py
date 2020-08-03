@@ -9,7 +9,6 @@ import requests
 from bs4 import BeautifulSoup
 
 keyword = input('請輸入要取得免費課程的名稱，輸入完後按下Enter')
-# keyword = '.Net'
 
 print(f"取得免費的{keyword}課程")
 
@@ -42,10 +41,13 @@ if response.status_code == 200:
                     img = 'https:'+img
                 # print('img=',img)
                 title = item.h4.text.strip()
-                # print('title=',title)
+                print('課程名稱：',title)
                 href = item.h4.a.get('href')
                 # print('href=',href)                
-                people = int(item.find('span',class_='item-user').text.strip().replace('人最近报名',''))
+                peoplestr = item.find('span',class_='item-user').text.strip().replace('人最近报名','')
+                if ('万' in peoplestr):
+                    peoplestr = peoplestr.replace('万','0000')
+                people = int(peoplestr)
                 # print('people=',people)
                 courseList.append({
                     'img':img,
@@ -57,12 +59,14 @@ if response.status_code == 200:
     #依報名人數排序
     courseSort = sorted(courseList, key=lambda k: k['people'], reverse=True)
     
+    fileTitle = f'騰訊課堂免費的{keyword}課程'
+    
     #組 Html 檔案內容
     html = '<!DOCTYPE html>'
     html += '<html xmlns=\"http://www.w3.org/1999/xhtml\">'
     html += '<head>'
     html += '<meta charset=\"utf-8\" />'
-    html += f'<title>取得騰訊課堂{keyword}免費的課程</title>'
+    html += f'<title>{fileTitle}</title>'
     html += '</head>'
     html += '<body>'
     html += '<table style=\"width: 50%; margin: auto; border:3px #cccccc solid;\" border=\"1\">'
@@ -82,7 +86,7 @@ if response.status_code == 200:
     html += '</html>'
     
     #將結果輸出成 Html 檔
-    fp = open(f'騰訊課堂免費的{keyword}課程.html','w',encoding='utf-8')
+    fp = open(f'{fileTitle}.html','w',encoding='utf-8')
     fp.write(html)
     fp.close()
             
