@@ -69,17 +69,17 @@ if response.status_code == 200:
     html += f'<title>{fileTitle}</title>'
     html += '</head>'
     html += '<body>'
-    html += '<table style=\"width: 50%; margin: auto; border:3px #cccccc solid;\" border=\"1\">'
-    html += '<tr><th>No</th><th>圖片</th><th>課程名稱</th><th>報名人數</th></tr>'
+    html += '<table style=\"width: 60%; margin: auto; border:3px #cccccc solid;\" border=\"1\">'
+    html += '<tr><th>No</th><th>圖片</th><th>課程名稱</th><th>報名人數</th><th>狀態</th></tr>'
     
     no=0
     for course in courseSort:
         no+=1
         href = course['href'] 
         html += f'<tr><td>{no}</td>'
-        html += f'<td><a href=\"{href}\"><img src=\"'+course['img']+'\"></a></td>'
-        html += f'<td><a href=\"{href}\">'+course['title']+'</a></td>'
-        html += '<td>'+str(course['people'])+'</td></tr>"'
+        html += f'<td><a href=\"{href}\" target=\"_blank\"><img src=\"'+course['img']+'\"></a></td>'
+        html += f'<td><a href=\"{href}\" target=\"_blank\">'+course['title']+'</a></td>'
+        html += '<td>'+str(course['people'])+'</td><td></td></tr>'
     
     html += '</table>'
     html += '</body>'
